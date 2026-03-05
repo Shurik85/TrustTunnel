@@ -1,5 +1,7 @@
 # CHANGELOG
 
+- [Fix] HTTP/1.1 codec busy loop when receiving partial request headers.
+
 ## 1.0.13
 
 - [Fix] Change deep-link format from `tt://` to `tt://?`. For backward compatibility, `tt://` is still supported.
