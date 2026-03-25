@@ -118,8 +118,8 @@ curl -fsSL https://raw.githubusercontent.com/TrustTunnel/TrustTunnel/refs/heads/
 ```
 
 > [!NOTE]
-> Currently only `linux-x86_64` and `linux-aarch64` architectures are provided
-> for the prebuilt packages.
+> Prebuilt packages are available for `linux-x86_64`, `linux-aarch64`, and
+> `macos-universal` (Intel and Apple Silicon) architectures.
 
 #### Updating the endpoint
 
