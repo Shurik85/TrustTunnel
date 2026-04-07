@@ -5,7 +5,7 @@ endpoint configurations between devices and applications.
 
 Status: version 1
 
-- version 1: Added fields for version, server display name, and DNS servers.
+- version 1: Added fields for version, server display name, and DNS upstreams.
 - draft 2: Changed format to tt://? to use case-sensitive URL part (query) instead of case-insensitive (host)
 - draft 1: Initial specification
 
@@ -92,7 +92,7 @@ in one or two bytes.
 | `0x0A` | `anti_dpi` | Bool | 1 byte: `0x01` = true, `0x00` = false | no (default `false`) |
 | `0x0B` | `client_random_prefix` | String | UTF-8 hex-encoded string in the following format: `prefix[/mask]` | no |
 | `0x0C` | `name` | String | Human-readable server name for display in the client UI | no |
-| `0x0D` | `dns_servers` | String[] | List of DNS server addresses (e.g. `"1.1.1.1"`, `"tls://dns.example.com"`, `"https://dns.example.com/dns-query"`) | no |
+| `0x0D` | `dns_upstreams` | String[] | List of DNS upstream addresses (e.g. `"1.1.1.1"`, `"tls://dns.example.com"`, `"https://dns.example.com/dns-query"`) | no |
 
 ### Encoding Rules
 

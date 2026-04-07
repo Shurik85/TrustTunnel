@@ -281,14 +281,14 @@ fn test_roundtrip_through_both_implementations() {
 }
 
 #[test]
-fn test_name_and_dns_servers_matches_python() {
+fn test_name_and_dns_upstreams_matches_python() {
     let toml = r#"
 hostname = "vpn.example.com"
 addresses = ["1.2.3.4:443"]
 username = "alice"
 password = "secret123"
 name = "My Server"
-dns_servers = ["1.1.1.1", "8.8.8.8"]
+dns_upstreams = ["1.1.1.1", "8.8.8.8"]
 "#;
 
     let config = DeepLinkConfig::builder()
@@ -296,8 +296,8 @@ dns_servers = ["1.1.1.1", "8.8.8.8"]
         .addresses(vec!["1.2.3.4:443".to_string()])
         .username("alice".to_string())
         .password("secret123".to_string())
-        .server_display_name(Some("My Server".to_string()))
-        .dns_servers(vec!["1.1.1.1".to_string(), "8.8.8.8".to_string()])
+        .name(Some("My Server".to_string()))
+        .dns_upstreams(vec!["1.1.1.1".to_string(), "8.8.8.8".to_string()])
         .build()
         .unwrap();
 
@@ -306,7 +306,7 @@ dns_servers = ["1.1.1.1", "8.8.8.8"]
 
     assert_eq!(
         rust_uri, python_uri,
-        "Rust and Python encoders produced different URIs for name/dns_servers"
+        "Rust and Python encoders produced different URIs for name/dns_upstreams"
     );
 
     let python_decoded = python_decode(&rust_uri);
@@ -315,7 +315,7 @@ dns_servers = ["1.1.1.1", "8.8.8.8"]
         "Python decoder failed on name"
     );
     assert!(
-        python_decoded.contains("dns_servers"),
-        "Python decoder failed on dns_servers"
+        python_decoded.contains("dns_upstreams"),
+        "Python decoder failed on dns_upstreams"
     );
 }

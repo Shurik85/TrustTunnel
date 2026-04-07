@@ -18,8 +18,8 @@ pub enum TlvTag {
     UpstreamProtocol = 0x09,
     AntiDpi = 0x0A,
     ClientRandomPrefix = 0x0B,
-    ServerDisplayName = 0x0C,
-    DnsServers = 0x0D,
+    Name = 0x0C,
+    DnsUpstreams = 0x0D,
 }
 
 impl TlvTag {
@@ -41,8 +41,8 @@ impl TlvTag {
             0x09 => Some(TlvTag::UpstreamProtocol),
             0x0A => Some(TlvTag::AntiDpi),
             0x0B => Some(TlvTag::ClientRandomPrefix),
-            0x0C => Some(TlvTag::ServerDisplayName),
-            0x0D => Some(TlvTag::DnsServers),
+            0x0C => Some(TlvTag::Name),
+            0x0D => Some(TlvTag::DnsUpstreams),
             _ => None,
         }
     }
@@ -117,8 +117,8 @@ pub struct DeepLinkConfig {
     pub certificate: Option<Vec<u8>>,
     pub upstream_protocol: Protocol,
     pub anti_dpi: bool,
-    pub server_display_name: Option<String>,
-    pub dns_servers: Vec<String>,
+    pub name: Option<String>,
+    pub dns_upstreams: Vec<String>,
 }
 
 impl DeepLinkConfig {
@@ -159,8 +159,8 @@ pub struct DeepLinkConfigBuilder {
     certificate: Option<Vec<u8>>,
     upstream_protocol: Option<Protocol>,
     anti_dpi: Option<bool>,
-    server_display_name: Option<String>,
-    dns_servers: Option<Vec<String>>,
+    name: Option<String>,
+    dns_upstreams: Option<Vec<String>>,
 }
 
 impl DeepLinkConfigBuilder {
@@ -219,13 +219,13 @@ impl DeepLinkConfigBuilder {
         self
     }
 
-    pub fn server_display_name(mut self, server_display_name: Option<String>) -> Self {
-        self.server_display_name = server_display_name;
+    pub fn name(mut self, name: Option<String>) -> Self {
+        self.name = name;
         self
     }
 
-    pub fn dns_servers(mut self, dns_servers: Vec<String>) -> Self {
-        self.dns_servers = Some(dns_servers);
+    pub fn dns_upstreams(mut self, dns_upstreams: Vec<String>) -> Self {
+        self.dns_upstreams = Some(dns_upstreams);
         self
     }
 
@@ -262,8 +262,8 @@ impl DeepLinkConfigBuilder {
             certificate: self.certificate,
             upstream_protocol: self.upstream_protocol.unwrap_or_default(),
             anti_dpi: self.anti_dpi.unwrap_or(false),
-            server_display_name: self.server_display_name,
-            dns_servers: self.dns_servers.unwrap_or_default(),
+            name: self.name,
+            dns_upstreams: self.dns_upstreams.unwrap_or_default(),
         };
         config.validate()?;
         Ok(config)
@@ -355,8 +355,8 @@ mod tests {
             upstream_protocol: Protocol::Http2,
             anti_dpi: false,
             client_random_prefix: None,
-            server_display_name: None,
-            dns_servers: vec![],
+            name: None,
+            dns_upstreams: vec![],
         };
 
         assert!(config.validate().is_err());

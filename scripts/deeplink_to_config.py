@@ -55,8 +55,8 @@ TAG_CERTIFICATE        = 0x08
 TAG_UPSTREAM_PROTOCOL  = 0x09
 TAG_ANTI_DPI           = 0x0A
 TAG_CLIENT_RANDOM_PREFIX = 0x0B
-TAG_SERVER_DISPLAY_NAME  = 0x0C
-TAG_DNS_SERVERS          = 0x0D
+TAG_NAME                   = 0x0C
+TAG_DNS_UPSTREAMS          = 0x0D
 
 CURRENT_VERSION = 1
 
@@ -193,10 +193,10 @@ def decode_config(data: bytes) -> dict:
             cfg["anti_dpi"] = value[0] != 0
         elif tag == TAG_CLIENT_RANDOM_PREFIX:
             cfg["client_random_prefix"] = value.decode()
-        elif tag == TAG_SERVER_DISPLAY_NAME:
+        elif tag == TAG_NAME:
             cfg["name"] = value.decode()
-        elif tag == TAG_DNS_SERVERS:
-            cfg["dns_servers"] = _decode_string_array(value)
+        elif tag == TAG_DNS_UPSTREAMS:
+            cfg["dns_upstreams"] = _decode_string_array(value)
         # Unknown tags are silently ignored per spec.
 
     if addresses:
@@ -246,7 +246,7 @@ _FIELD_ORDER: list[tuple[str, str]] = [
     ("upstream_protocol", "Protocol to be used to communicate with the endpoint [http2, http3]"),
     ("anti_dpi",          "Is anti-DPI measures should be enabled"),
     ("name",              "Human-readable server display name"),
-    ("dns_servers",       "DNS servers to use when connected to this endpoint"),
+    ("dns_upstreams",     "DNS upstreams to use when connected to this endpoint"),
 ]
 
 

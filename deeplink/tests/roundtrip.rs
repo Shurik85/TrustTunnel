@@ -276,33 +276,30 @@ fn test_invalid_hex_client_random_prefix() {
 }
 
 #[test]
-fn test_roundtrip_with_server_display_name() {
+fn test_roundtrip_with_name() {
     let config = DeepLinkConfig::builder()
         .hostname("vpn.example.com".to_string())
         .addresses(vec!["1.2.3.4:443".to_string()])
         .username("user".to_string())
         .password("pass".to_string())
-        .server_display_name(Some("My VPN Server".to_string()))
+        .name(Some("My VPN Server".to_string()))
         .build()
         .unwrap();
 
     let uri = encode(&config).unwrap();
     let decoded = decode(&uri).unwrap();
 
-    assert_eq!(
-        decoded.server_display_name,
-        Some("My VPN Server".to_string())
-    );
+    assert_eq!(decoded.name, Some("My VPN Server".to_string()));
 }
 
 #[test]
-fn test_roundtrip_with_dns_servers() {
+fn test_roundtrip_with_dns_upstreams() {
     let config = DeepLinkConfig::builder()
         .hostname("vpn.example.com".to_string())
         .addresses(vec!["1.2.3.4:443".to_string()])
         .username("user".to_string())
         .password("pass".to_string())
-        .dns_servers(vec![
+        .dns_upstreams(vec![
             "1.1.1.1".to_string(),
             "tls://dns.example.com".to_string(),
             "https://dns.example.com/dns-query".to_string(),
@@ -314,7 +311,7 @@ fn test_roundtrip_with_dns_servers() {
     let decoded = decode(&uri).unwrap();
 
     assert_eq!(
-        decoded.dns_servers,
+        decoded.dns_upstreams,
         vec![
             "1.1.1.1",
             "tls://dns.example.com",
@@ -336,8 +333,8 @@ fn test_roundtrip_without_new_optional_fields() {
     let uri = encode(&config).unwrap();
     let decoded = decode(&uri).unwrap();
 
-    assert_eq!(decoded.server_display_name, None);
-    assert!(decoded.dns_servers.is_empty());
+    assert_eq!(decoded.name, None);
+    assert!(decoded.dns_upstreams.is_empty());
 }
 
 #[test]

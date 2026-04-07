@@ -83,8 +83,8 @@ TAG_CERTIFICATE        = 0x08
 TAG_UPSTREAM_PROTOCOL  = 0x09
 TAG_ANTI_DPI           = 0x0A
 TAG_CLIENT_RANDOM_PREFIX = 0x0B
-TAG_SERVER_DISPLAY_NAME  = 0x0C
-TAG_DNS_SERVERS          = 0x0D
+TAG_NAME                 = 0x0C
+TAG_DNS_UPSTREAMS        = 0x0D
 
 CURRENT_VERSION = 1
 
@@ -160,14 +160,14 @@ def encode_config(cfg: dict) -> bytes:
             raise ValueError(f"unknown upstream_protocol: {proto}")
         buf += tlv(TAG_UPSTREAM_PROTOCOL, bytes([PROTOCOL_MAP[proto]]))
 
-    # server_display_name (optional)
+    # name (optional)
     if "name" in cfg and cfg["name"]:
-        buf += tlv(TAG_SERVER_DISPLAY_NAME, cfg["name"].encode())
+        buf += tlv(TAG_NAME, cfg["name"].encode())
 
-    # dns_servers (optional, String[] encoding)
-    dns = cfg.get("dns_servers")
+    # dns_upstreams (optional, String[] encoding)
+    dns = cfg.get("dns_upstreams")
     if dns:
-        buf += tlv(TAG_DNS_SERVERS, encode_string_array(dns))
+        buf += tlv(TAG_DNS_UPSTREAMS, encode_string_array(dns))
 
     return bytes(buf)
 

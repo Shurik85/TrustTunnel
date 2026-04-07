@@ -50,8 +50,8 @@ fn arbitrary_config() -> impl Strategy<Value = DeepLinkConfig> {
                     upstream_protocol,
                     anti_dpi,
                 ),
-                server_display_name,
-                dns_servers,
+                name,
+                dns_upstreams,
             )| {
                 DeepLinkConfig {
                     hostname,
@@ -65,8 +65,8 @@ fn arbitrary_config() -> impl Strategy<Value = DeepLinkConfig> {
                     certificate,
                     upstream_protocol,
                     anti_dpi,
-                    server_display_name,
-                    dns_servers,
+                    name,
+                    dns_upstreams,
                 }
             },
         )
@@ -88,8 +88,8 @@ proptest! {
         prop_assert_eq!(decoded.certificate, config.certificate);
         prop_assert_eq!(decoded.upstream_protocol, config.upstream_protocol);
         prop_assert_eq!(decoded.anti_dpi, config.anti_dpi);
-        prop_assert_eq!(decoded.server_display_name, config.server_display_name);
-        prop_assert_eq!(decoded.dns_servers, config.dns_servers);
+        prop_assert_eq!(decoded.name, config.name);
+        prop_assert_eq!(decoded.dns_upstreams, config.dns_upstreams);
     }
 
     #[test]

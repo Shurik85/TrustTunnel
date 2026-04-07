@@ -16,7 +16,7 @@ pub fn build(
     custom_sni: Option<String>,
     client_random_prefix: Option<String>,
     name: Option<String>,
-    dns_servers: Vec<String>,
+    dns_upstreams: Vec<String>,
 ) -> ClientConfig {
     let user = username
         .iter()
@@ -51,7 +51,7 @@ pub fn build(
         upstream_protocol: "http2".into(),
         anti_dpi: false,
         name: name.unwrap_or_default(),
-        dns_servers,
+        dns_upstreams,
     }
 }
 
@@ -87,8 +87,8 @@ pub struct ClientConfig {
     anti_dpi: bool,
     /// Human-readable server display name
     name: String,
-    /// DNS servers to use when connected to this endpoint
-    dns_servers: Vec<String>,
+    /// DNS upstreams to use when connected to this endpoint
+    dns_upstreams: Vec<String>,
 }
 
 impl ClientConfig {
@@ -113,9 +113,9 @@ impl ClientConfig {
         if !self.name.is_empty() {
             doc["name"] = value(&self.name);
         }
-        if !self.dns_servers.is_empty() {
-            let vec = toml_edit::Array::from_iter(self.dns_servers.iter().map(|x| x.as_str()));
-            doc["dns_servers"] = value(vec);
+        if !self.dns_upstreams.is_empty() {
+            let vec = toml_edit::Array::from_iter(self.dns_upstreams.iter().map(|x| x.as_str()));
+            doc["dns_upstreams"] = value(vec);
         }
         doc.to_string()
     }
@@ -161,12 +161,12 @@ impl ClientConfig {
             certificate,
             upstream_protocol,
             anti_dpi: self.anti_dpi,
-            server_display_name: if self.name.is_empty() {
+            name: if self.name.is_empty() {
                 None
             } else {
                 Some(self.name.clone())
             },
-            dns_servers: self.dns_servers.clone(),
+            dns_upstreams: self.dns_upstreams.clone(),
         };
 
         trusttunnel_deeplink::encode(&config)
@@ -216,7 +216,7 @@ anti_dpi = false
 name = ""
 
 {}
-dns_servers = []
+dns_upstreams = []
 "#,
         ClientConfig::doc_hostname().to_toml_comment(),
         ClientConfig::doc_addresses().to_toml_comment(),
@@ -230,7 +230,7 @@ dns_servers = []
         ClientConfig::doc_upstream_protocol().to_toml_comment(),
         ClientConfig::doc_anti_dpi().to_toml_comment(),
         ClientConfig::doc_name().to_toml_comment(),
-        ClientConfig::doc_dns_servers().to_toml_comment(),
+        ClientConfig::doc_dns_upstreams().to_toml_comment(),
     )
 });
 #[cfg(test)]
@@ -253,7 +253,7 @@ mod tests {
                 upstream_protocol: "http2".into(),
                 anti_dpi: false,
                 name: String::new(),
-                dns_servers: vec![],
+                dns_upstreams: vec![],
             }
         }
     }

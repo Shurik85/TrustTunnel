@@ -271,16 +271,16 @@ This outputs a `tt://?` deep-link URI that can be:
 You can also provide additional options:
 
 - `--name <display_name>`: Set a custom display name for the server in the client app.
-- `--dns-server <dns_server>`: Specify a DNS server for the client. Can be an IP address
+- `--dns-upstream <dns_upstream>`: Specify a DNS upstream for the client. Can be an IP address
   or a secure DNS URI (e.g., `tls://1.1.1.1`, `https://dns.google/dns-query`).
-  This flag can be used multiple times to provide a list of DNS servers.
+  This flag can be used multiple times to provide a list of DNS upstreams.
 
-Example with custom name and DNS servers:
+Example with custom name and DNS upstreams:
 
 ```shell
 ./trusttunnel_endpoint vpn.toml hosts.toml -c <client_name> -a <address> \
     --name "My Secure VPN" \
-    --dns-server 1.1.1.1 --dns-server tls://8.8.8.8
+    --dns-upstream 1.1.1.1 --dns-upstream tls://8.8.8.8
 ```
 
 When `--generate-client-random-prefix` is used, the endpoint also appends an

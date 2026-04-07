@@ -100,15 +100,15 @@ pub fn encode_tlv_payload(config: &DeepLinkConfig) -> Result<Vec<u8>> {
         payload.extend(encode_protocol_field(config.upstream_protocol)?);
     }
 
-    // server_display_name (optional)
-    if let Some(ref name) = config.server_display_name {
-        payload.extend(encode_string_field(TlvTag::ServerDisplayName, name)?);
+    // name (optional)
+    if let Some(ref name) = config.name {
+        payload.extend(encode_string_field(TlvTag::Name, name)?);
     }
 
-    // dns_servers (optional, String[] encoding)
-    if !config.dns_servers.is_empty() {
-        let value = encode_string_array(&config.dns_servers)?;
-        payload.extend(encode_tlv(TlvTag::DnsServers, &value)?);
+    // dns_upstreams (optional, String[] encoding)
+    if !config.dns_upstreams.is_empty() {
+        let value = encode_string_array(&config.dns_upstreams)?;
+        payload.extend(encode_tlv(TlvTag::DnsUpstreams, &value)?);
     }
 
     Ok(payload)

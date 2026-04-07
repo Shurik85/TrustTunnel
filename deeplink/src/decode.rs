@@ -120,8 +120,8 @@ pub fn decode_tlv_payload(payload: &[u8]) -> Result<DeepLinkConfig> {
     let mut upstream_protocol: Protocol = Protocol::Http2; // default
     let mut anti_dpi: bool = false; // default
     let mut client_random_prefix: Option<String> = None;
-    let mut server_display_name: Option<String> = None;
-    let mut dns_servers: Vec<String> = Vec::new();
+    let mut name: Option<String> = None;
+    let mut dns_upstreams: Vec<String> = Vec::new();
 
     while let Some(field_result) = parser.next_field() {
         let (tag_opt, value) = field_result?;
@@ -190,11 +190,11 @@ pub fn decode_tlv_payload(payload: &[u8]) -> Result<DeepLinkConfig> {
                 })?;
                 client_random_prefix = Some(prefix);
             }
-            TlvTag::ServerDisplayName => {
-                server_display_name = Some(decode_string(&value)?);
+            TlvTag::Name => {
+                name = Some(decode_string(&value)?);
             }
-            TlvTag::DnsServers => {
-                dns_servers = decode_string_array(&value)?;
+            TlvTag::DnsUpstreams => {
+                dns_upstreams = decode_string_array(&value)?;
             }
         }
     }
@@ -219,8 +219,8 @@ pub fn decode_tlv_payload(payload: &[u8]) -> Result<DeepLinkConfig> {
         certificate,
         upstream_protocol,
         anti_dpi,
-        server_display_name,
-        dns_servers,
+        name,
+        dns_upstreams,
     };
 
     config.validate()?;
